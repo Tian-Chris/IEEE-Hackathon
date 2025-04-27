@@ -17,7 +17,7 @@ params_detect = {
 }
 
 def addFace(number):
-    os.system(f"libcamera-still -o {f"facesFolder/{number}.jpg"} --width 1920 --height 1080 --nopreview --timeout 1000")
+    os.system(f"libcamera-still -o facesFolder/{number}.jpg --width 1920 --height 1080 --nopreview --timeout 1000")
     image = cv2.imread(f"facesFolder/{number}.jpg")
     if image is not None:
         print(f"Image saved as {output_path}")
