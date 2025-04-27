@@ -40,7 +40,7 @@ def readLine(line, characters):
 
 password = "1234"
 def readKeys():
-    keys = []
+    keys = ""
     for i in range(4):
         key_detected = False
         while not key_detected:
@@ -51,9 +51,14 @@ def readKeys():
 
             if key is not None:
                 print(f"Key pressed: {key}")
-                keys.append(key)
-                key_detected = True  # Key detected, move to the next key
-            time.sleep(0.1)  # Debounce time
+                keys += key 
+                key_detected = True  
+                while readLine(R1, ["1", "2", "3", "A"]) == key or \
+                      readLine(R2, ["4", "5", "6", "B"]) == key or \
+                      readLine(R3, ["7", "8", "9", "C"]) == key or \
+                      readLine(R4, ["*", "0", "#", "D"]) == key:
+                    time.sleep(0.05)  
+            time.sleep(0.1)
     return keys
 
 while True:
