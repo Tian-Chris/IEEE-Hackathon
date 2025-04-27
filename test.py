@@ -1,4 +1,5 @@
 import cv2
+import os
 
 gst_pipeline = (
     "libcamerasrc ! "
@@ -12,9 +13,9 @@ cap = cv2.VideoCapture(gst_pipeline, cv2.CAP_GSTREAMER)
 ret, frame = cap.read()
 
 if ret:
-    cv2.imwrite('snapshot.jpg', frame)
-    print("✅ Image captured!")
+    cv2.imwrite('facesFolder/snapshot.jpg', frame)
+    print("succeedded")
 else:
-    print("❌ Failed to capture image.")
+    print("failed")
 
 cap.release()
