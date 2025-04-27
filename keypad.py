@@ -69,7 +69,7 @@ while True:
         if temp == "0000":
             print("new password")
             password = readKeys()
-        else if temp == "####":
+        elif temp == "####":
             print("new face:")
             face.addFace(input("Enter ID: "))
         temp = ""
