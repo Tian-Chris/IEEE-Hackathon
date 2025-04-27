@@ -58,20 +58,20 @@ def readKeys():
 
 while True:
     temp = readKeys()
-        if temp == password:
-            print("Password correct")
-            if readKeys() == "0000":
-                print("new password")
-                password = readKeys()
-            if readKeys() == "####":
-                print("new face:")
-                face.addFace(input("Enter ID: "))
-        elif temp == "####":  
-            if face.runFacialRecognition():
-                print("accessed")
-            else:
-                print("access denied")
+    if temp == password:
+        print("Password correct")
+        if readKeys() == "0000":
+            print("new password")
+            password = readKeys()
+        if readKeys() == "####":
+            print("new face:")
+            face.addFace(input("Enter ID: "))
+    elif temp == "####":  
+        if face.runFacialRecognition():
+            print("accessed")
         else:
-            print("Password incorrect")
-            temp = "" 
-            time.sleep(1) 
+            print("access denied")
+    else:
+        print("Password incorrect")
+        temp = "" 
+        time.sleep(1) 
