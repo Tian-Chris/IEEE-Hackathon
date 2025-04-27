@@ -16,20 +16,13 @@ params_detect = {
     'returnFaceId': 'true'
 }
 
-gst_pipeline = (
-    "libcamerasrc ! "
-    "video/x-raw,width=640,height=480,format=RGB888 ! "
-    "videoconvert ! "
-    "appsink"
-)
-
 def detectFace(image_path):
     with open(image_path, 'rb') as f:
         data = f.read()
     faces = requests.post(detect_url, params=params_detect, headers=headers, data=data).json()
-    if faces:
+    if faces and isinstance(faces, list):
         return faces[0]['faceId']
-    return
+    return None
 
 def checkSame(face_id1, face_id2):
     body = {
@@ -39,30 +32,27 @@ def checkSame(face_id1, face_id2):
     result = requests.post(verify_url, headers=headers, json=body).json()
     return result['isIdentical'], result['confidence']
 
-cap = cv2.VideoCapture(gst_pipeline, cv2.CAP_GSTREAMER)
-ret, frame = cap.read()
-if ret:
-    cv2.imwrite('snapshot.jpg', frame)
-else:
+os.system("libcamera-still -o face.jpg --width 640 --height 480 --nopreview --timeout 1")
+
+if not os.path.exists("face.jpg"):
     print("Failed to capture image.")
     exit()
-cap.release()
 
-detectedFace = detectFace('snapshot.jpg')
+
+detectedFace = detectFace('face.jpg')
 if detectedFace is None:
-    print("No face detected.")
+    print("No face")
     exit()
 
-
-for filename in os.listdir(facesFolder):
-    if filename.lower().endswith(('.jpg')):
-        id = detectFace(os.path.join(facesFolder, filename))
+for filename in os.listdir("facesFolder"):
+    if filename.lower().endswith('.jpg'):
+        id = detectFace(os.path.join("facesFolder", filename))
         if id is None:
-            print(f"No detected in {filename}")
+            print(f"No face in {filename}")
             continue
         identical, confidence = checkSame(detectedFace, id)
-        print(f"{filename}; identical: {identical}, Confidence: {confidence:.2f})")
+        print(f"{filename}; identical: {identical}, Confidence: {confidence:.2f}")
         if identical:
-            print(f" face found: {filename}!")
+            print(f" found: {filename}!")
             break
-print("No match")
+
