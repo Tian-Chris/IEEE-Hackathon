@@ -65,12 +65,14 @@ while True:
     temp = readKeys()
     if temp == password:
         print("Password correct")
-        if readKeys() == "0000":
+        temp = readKeys()
+        if temp == "0000":
             print("new password")
             password = readKeys()
-        if readKeys() == "####":
+        else if temp == "####":
             print("new face:")
             face.addFace(input("Enter ID: "))
+        temp = ""
     elif temp == "####":  
         if face.runFacialRecognition():
             print("accessed")
